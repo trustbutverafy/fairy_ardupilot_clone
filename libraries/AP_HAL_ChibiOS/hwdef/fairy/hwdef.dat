@@ -1,0 +1,64 @@
+
+# hw definition file for processing by chibios_hwdef.py
+# for STM32H755ZI-Q Nucleo board bootloader
+
+# board ID for firmware load
+APJ_BOARD_ID 1137  # Custom ID for Nucleo H755ZI-Q
+
+# MCU class and specific type
+MCU STM32H7xx STM32H755xx
+define CORE_CM7
+#define SMPS_PWR
+
+# crystal frequency
+OSCILLATOR_HZ 8000000  # Nucleo H755ZI-Q uses 8MHz crystal
+
+# bootloader is installed at zero offset
+FLASH_RESERVE_START_KB 0
+
+# the H755 has 128k sectors
+FLASH_BOOTLOADER_LOAD_KB 128
+
+# with 2M flash we can afford to optimize for speed
+FLASH_SIZE_KB 2048
+HAL_STORAGE_SIZE 32768
+
+env OPTIMIZE -Os
+
+# ChibiOS system timer
+STM32_ST_USE_TIMER 2
+
+# USB setup
+USB_STRING_MANUFACTURER "Nucleo H755ZI-Q"
+USB_STRING_PRODUCT "ArduPilot"
+
+# order of UARTs (and USB)
+SERIAL_ORDER OTG1 USART3
+
+# USART3 is debug port (matches Nucleo debug port)
+STDOUT_SERIAL SD3
+STDOUT_BAUDRATE 115200
+
+# USB for DFU
+PA11 OTG_FS_DM OTG1
+PA12 OTG_FS_DP OTG1
+
+# pins for SWD debugging
+PA13 JTMS-SWDIO SWD
+PA14 JTCK-SWCLK SWD
+
+# LEDs - match Nucleo board LED pins
+PA5  LED_BOOTLOADER OUTPUT LOW  # Green LED (LD1)
+PE1  LED_ACTIVITY  OUTPUT LOW   # Yellow LED (LD2)
+# Optional: Uncomment if you want to use the Blue LED
+PB14 LED_STATUS    OUTPUT LOW   # Blue LED (LD3)
+
+# define HAL_LED behavior
+define HAL_LED_ON 0
+
+# enable DFU boot
+ENABLE_DFU_BOOT 1
+
+# Note: This configuration assumes default boot addresses:
+# CM7: 0x08000000
+# CM4: 0x08100000
