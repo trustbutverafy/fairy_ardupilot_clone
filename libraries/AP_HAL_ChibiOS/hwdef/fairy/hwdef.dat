@@ -53,6 +53,10 @@ PE1  LED_ACTIVITY  OUTPUT LOW   # Yellow LED (LD2)
 # Optional: Uncomment if you want to use the Blue LED
 PB14 LED_STATUS    OUTPUT LOW   # Blue LED (LD3)
 
+# USART3 pins (debug port)
+PD8 USART3_TX USART3
+PD9 USART3_RX USART3
+
 # define HAL_LED behavior
 define HAL_LED_ON 0
 
